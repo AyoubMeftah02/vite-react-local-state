@@ -1,7 +1,5 @@
 /// <reference types="vite/client" />
 
-/// <reference types="vite/client" />
-
 // Describes metadata related to a provider based on EIP-6963.
 interface EIP6963ProviderInfo {
   walletId: string;
@@ -29,8 +27,8 @@ interface EIP1193Provider {
   }) => Promise<unknown>;
 }
 
-// Combines the provider's metadata with an actual provider object, creating a complete picture of a
-// wallet provider at a glance.
+/* Combines the provider's metadata with an actual provider object, creating a complete picture of a
+ wallet provider at a glance.*/
 interface EIP6963ProviderDetail {
   info: EIP6963ProviderInfo;
   provider: EIP1193Provider;
