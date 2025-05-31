@@ -1,4 +1,6 @@
+import './styles/main.css';
 import ReactDOM from 'react-dom/client';
+
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Home from '@/pages/home';
 import Authentication from '@/pages/Authentication';
@@ -20,7 +22,10 @@ const AppRoutes = () => {
         </>
       ) : (
         <>
-          <Route path="/" element={<Authentication onAuthenticated={handleAuthenticated} />} />
+          <Route
+            path="/"
+            element={<Authentication onAuthenticated={handleAuthenticated} />}
+          />
           <Route path="*" element={<Navigate to="/" replace />} />
         </>
       )}
