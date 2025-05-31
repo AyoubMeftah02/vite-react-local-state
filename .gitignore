@@ -23,6 +23,3 @@ dist-ssr
 *.sln
 *.sw?
 
-
-# Ignore all files inside a folder but not the folder itself
-src/*
