@@ -1,4 +1,3 @@
-// src/types/eip6963.ts
 
 // Standard EIP-1193 provider interface
 export interface EIP1193Provider {
