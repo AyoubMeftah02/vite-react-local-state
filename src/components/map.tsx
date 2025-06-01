@@ -141,7 +141,7 @@ const MapComp = ({ userAccount }: MapCompProps) => {
   };
 
   // Helper to check geolocation permission status (if supported)
-  const checkGeolocationPermission = async () => {
+  const checkPermission = async () => {
     if (navigator.permissions) {
       try {
         const status = await navigator.permissions.query({
@@ -166,7 +166,7 @@ const MapComp = ({ userAccount }: MapCompProps) => {
   const getUserLocation = async () => {
     setIsLocating(true);
     setLocationError(null);
-    const hasPermission = await checkGeolocationPermission();
+    const hasPermission = await checkPermission();
     if (!hasPermission) {
       setIsLocating(false);
       return;
