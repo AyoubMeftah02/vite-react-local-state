@@ -1,5 +1,5 @@
 import Navbar from '@/components/navbar';
-import MapComp from '@/components/map';
+import Map from '@/components/map';
 import { useWallet } from '@/providers/WalletProvider';
 
 const Home = () => {
@@ -24,7 +24,7 @@ const Home = () => {
         <Navbar />
       </header>
       <main className="container mx-auto p-4">
-        <MapComp userAccount={userAccount || ''} />
+        <Map userAccount={userAccount || ''} />
       </main>
     </div>
   );

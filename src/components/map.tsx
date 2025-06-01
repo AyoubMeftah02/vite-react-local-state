@@ -1,14 +1,20 @@
 import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, useMap, Popup } from 'react-leaflet';
 import { type LatLngExpression } from 'leaflet';
-import type { Driver, RideRequest, MapCompProps } from '@/types/ride-types';
+import type { Driver, RideRequest, MapProps } from '@/types/ride-types';
 import L from 'leaflet';
 import car from '@/assets/car.png';
-import driversData from '@/data/drivers.json';
 
 // Custom icons for different marker types
 const userIcon = new L.Icon({
-  iconUrl: car,
+  iconUrl:
+    'data:image/svg+xml;base64,' +
+    btoa(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#3B82F6" width="24" height="24">
+      <circle cx="12" cy="12" r="10" fill="#3B82F6" stroke="white" stroke-width="2"/>
+      <circle cx="12" cy="12" r="4" fill="white"/>
+    </svg>
+  `),
   iconSize: [24, 24],
   iconAnchor: [12, 12],
   popupAnchor: [0, -12],
@@ -60,10 +66,10 @@ const DriverMarker = ({
           <strong className="text-lg">{driver.name}</strong>
           <br />
           <div className="text-sm text-gray-600 mt-1">
-            <div> {driver.rating}/5.0</div>
-            <div> {driver.carModel}</div>
-            <div> {driver.licensePlate}</div>
-            <div> {driver.eta} min away</div>
+            <div>⭐ {driver.rating}/5.0</div>
+            <div>🚗 {driver.carModel}</div>
+            <div>📋 {driver.licensePlate}</div>
+            <div>⏱️ {driver.eta} min away</div>
           </div>
           <button
             onClick={() => onSelect(driver)}
@@ -77,7 +83,7 @@ const DriverMarker = ({
   );
 };
 
-const MapComp = ({ userAccount }: MapCompProps) => {
+const Map = ({ userAccount }: MapProps) => {
   const [userPosition, setUserPosition] = useState<LatLngExpression | null>(
     null,
   );
@@ -89,25 +95,49 @@ const MapComp = ({ userAccount }: MapCompProps) => {
   const [showDrivers, setShowDrivers] = useState<boolean>(false);
 
   // Generate mock drivers around user location
-  const generateDrivers = (userPos: LatLngExpression): Driver[] => {
+  const generateMockDrivers = (userPos: LatLngExpression): Driver[] => {
     const [userLat, userLng] = Array.isArray(userPos)
       ? userPos
       : [userPos.lat, userPos.lng];
-    // Map static driver data to positions around user location
-    return (driversData as Omit<Driver, 'position'>[]).map((driver, idx) => {
-      // Offset positions for demo (spread out drivers)
-      const offsets = [
-        [0.005, 0.003],
-        [-0.003, 0.007],
-        [0.008, -0.002],
-        [-0.006, -0.005],
-      ];
-      const [latOffset, lngOffset] = offsets[idx % offsets.length];
-      return {
-        ...driver,
-        position: [userLat + latOffset, userLng + lngOffset],
-      };
-    });
+    const mockDrivers: Driver[] = [
+      {
+        id: '1',
+        name: 'John Smith',
+        position: [userLat + 0.005, userLng + 0.003],
+        rating: 4.8,
+        eta: 3,
+        carModel: 'Toyota Camry',
+        licensePlate: 'ABC-123',
+      },
+      {
+        id: '2',
+        name: 'Sarah Johnson',
+        position: [userLat - 0.003, userLng + 0.007],
+        rating: 4.9,
+        eta: 5,
+        carModel: 'Honda Civic',
+        licensePlate: 'XYZ-789',
+      },
+      {
+        id: '3',
+        name: 'Mike Davis',
+        position: [userLat + 0.008, userLng - 0.002],
+        rating: 4.7,
+        eta: 7,
+        carModel: 'Nissan Altima',
+        licensePlate: 'DEF-456',
+      },
+      {
+        id: '4',
+        name: 'Emily Chen',
+        position: [userLat - 0.006, userLng - 0.005],
+        rating: 4.9,
+        eta: 4,
+        carModel: 'Hyundai Elantra',
+        licensePlate: 'GHI-321',
+      },
+    ];
+    return mockDrivers;
   };
 
   // Handle driver selection
@@ -129,7 +159,7 @@ const MapComp = ({ userAccount }: MapCompProps) => {
       return;
     }
     setShowDrivers(true);
-    const mockDrivers = generateDrivers(userPosition);
+    const mockDrivers = generateMockDrivers(userPosition);
     setDrivers(mockDrivers);
   };
 
@@ -141,7 +171,7 @@ const MapComp = ({ userAccount }: MapCompProps) => {
   };
 
   // Helper to check geolocation permission status (if supported)
-  const checkPermission = async () => {
+  const checkGeolocationPermission = async () => {
     if (navigator.permissions) {
       try {
         const status = await navigator.permissions.query({
@@ -166,7 +196,7 @@ const MapComp = ({ userAccount }: MapCompProps) => {
   const getUserLocation = async () => {
     setIsLocating(true);
     setLocationError(null);
-    const hasPermission = await checkPermission();
+    const hasPermission = await checkGeolocationPermission();
     if (!hasPermission) {
       setIsLocating(false);
       return;
@@ -189,8 +219,8 @@ const MapComp = ({ userAccount }: MapCompProps) => {
         setIsLocating(false);
 
         // Generate mock drivers around user location
-        const Drivers = generateDrivers(newPos);
-        setDrivers(Drivers);
+        const mockDrivers = generateMockDrivers(newPos);
+        setDrivers(mockDrivers);
       },
       () => {
         clearTimeout(slowFetchTimeout);
@@ -206,6 +236,7 @@ const MapComp = ({ userAccount }: MapCompProps) => {
   // Initial location fetch
   useEffect(() => {
     getUserLocation();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -231,7 +262,7 @@ const MapComp = ({ userAccount }: MapCompProps) => {
               onClick={requestRide}
               className="py-2.5 px-4 cursor-pointer bg-green-600 text-white border-none rounded hover:bg-green-700 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
             >
-              Request Ride
+              🚗 Request Ride
             </button>
           )}
 
@@ -240,7 +271,7 @@ const MapComp = ({ userAccount }: MapCompProps) => {
               onClick={cancelRide}
               className="py-2.5 px-4 cursor-pointer bg-red-600 text-white border-none rounded hover:bg-red-700 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
             >
-              Cancel Ride
+              ❌ Cancel Ride
             </button>
           )}
         </div>
@@ -322,12 +353,12 @@ const MapComp = ({ userAccount }: MapCompProps) => {
                     </strong>
                     <br />
                     <div className="text-sm text-gray-600 mt-1">
-                      <div>{rideRequest.driver.rating}/5.0</div>
-                      <div> {rideRequest.driver.carModel}</div>
-                      <div> {rideRequest.driver.licensePlate}</div>
-                      <div> {rideRequest.driver.eta} min away</div>
+                      <div>⭐ {rideRequest.driver.rating}/5.0</div>
+                      <div>🚗 {rideRequest.driver.carModel}</div>
+                      <div>📋 {rideRequest.driver.licensePlate}</div>
+                      <div>⏱️ {rideRequest.driver.eta} min away</div>
                       <div className="mt-2 font-semibold text-green-600">
-                        Fare: MAD{rideRequest.estimatedFare}
+                        💰 Fare: ${rideRequest.estimatedFare}
                       </div>
                     </div>
                   </div>
@@ -351,4 +382,4 @@ const MapComp = ({ userAccount }: MapCompProps) => {
   );
 };
 
-export default MapComp;
+export default Map;

@@ -17,6 +17,6 @@ export interface RideRequest {
   estimatedFare: number;
 }
 
-export interface MapCompProps {
+export interface MapProps {
   userAccount: string;
 }
