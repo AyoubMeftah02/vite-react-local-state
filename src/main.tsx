@@ -1,4 +1,5 @@
-import './styles/main.css';
+import '@/styles/main.css';
+import 'leaflet/dist/leaflet.css';
 import ReactDOM from 'react-dom/client';
 
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';

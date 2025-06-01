@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from 'react';
-import { store } from '@/hooks/store';
+import { store } from '@/types/store';
 
 export const useSyncProviders = () =>
   useSyncExternalStore(store.subscribe, store.value, store.value);
