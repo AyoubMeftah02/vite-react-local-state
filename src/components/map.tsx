@@ -174,16 +174,19 @@ const Map = ({ userAccount }: MapProps) => {
   const checkGeolocationPermission = async () => {
     if (navigator.permissions) {
       try {
+        console.log('Checking geolocation permission...');
         const status = await navigator.permissions.query({
           name: 'geolocation',
         });
+        console.log('Geolocation permission status:', status.state);
         if (status.state === 'denied') {
           setLocationError(
             'Location permission denied. Please enable it in your browser settings.',
           );
           return false;
         }
-      } catch {
+      } catch (error) {
+        console.error('Error checking geolocation permission:', error);
         setLocationError(
           'Unable to check location permissions. Proceeding with location request.',
         );
@@ -194,6 +197,7 @@ const Map = ({ userAccount }: MapProps) => {
 
   // Function to fetch user's location
   const getUserLocation = async () => {
+    console.log('Getting user location...');
     setIsLocating(true);
     setLocationError(null);
     const hasPermission = await checkGeolocationPermission();
@@ -208,6 +212,7 @@ const Map = ({ userAccount }: MapProps) => {
     }, 5000);
     navigator.geolocation.getCurrentPosition(
       (position) => {
+        console.log('Location obtained:', position.coords);
         clearTimeout(slowFetchTimeout);
         const newPos: LatLngExpression = [
           position.coords.latitude,
@@ -222,14 +227,19 @@ const Map = ({ userAccount }: MapProps) => {
         const mockDrivers = generateMockDrivers(newPos);
         setDrivers(mockDrivers);
       },
-      () => {
+      (error) => {
+        console.error('Error getting location:', error);
         clearTimeout(slowFetchTimeout);
         setLocationError(
           'Error getting your location. Please ensure location services are enabled and permissions are granted.',
         );
         setIsLocating(false);
       },
-      { enableHighAccuracy: true, timeout: 10000 },
+      { 
+        enableHighAccuracy: true, 
+        timeout: 10000,
+        maximumAge: 0 
+      },
     );
   };
 
