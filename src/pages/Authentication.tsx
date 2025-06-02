@@ -85,7 +85,7 @@ const Authentication = ({ onAuthenticated }: AuthenticationProps) => {
         <div className="w-full max-w-md bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded cursor-pointer" onClick={clearError}>
           <div>
             <strong className="font-bold">Error:</strong> {errorMessage}
-            <div className="text-xs mt-1 text-red-500">(click to dismiss)</div>
+            <div className="text-3xl mt-1 text-red">(click to dismiss)</div>
           </div>
         </div>
       )}

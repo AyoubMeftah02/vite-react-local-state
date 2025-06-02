@@ -66,10 +66,10 @@ const DriverMarker = ({
           <strong className="text-lg">{driver.name}</strong>
           <br />
           <div className="text-sm text-gray-600 mt-1">
-            <div>⭐ {driver.rating}/5.0</div>
-            <div>🚗 {driver.carModel}</div>
-            <div>📋 {driver.licensePlate}</div>
-            <div>⏱️ {driver.eta} min away</div>
+            <div> {driver.rating}/5.0</div>
+            <div> {driver.carModel}</div>
+            <div> {driver.licensePlate}</div>
+            <div>⏱ {driver.eta} min away</div>
           </div>
           <button
             onClick={() => onSelect(driver)}
@@ -253,7 +253,7 @@ const Map = ({ userAccount }: MapProps) => {
     <div className="flex flex-col h-screen w-full p-5 box-border bg-gray-50">
       <div className="mb-5 p-4 bg-white rounded-lg shadow-sm">
         <h1 className="text-2xl font-bold text-gray-800 mb-2">
-          Welcome to Rideshare Explorer
+          Welcome to ########
         </h1>
         <p className="text-sm text-gray-600 mb-3">
           Connected wallet: {userAccount}
@@ -272,7 +272,7 @@ const Map = ({ userAccount }: MapProps) => {
               onClick={requestRide}
               className="py-2.5 px-4 cursor-pointer bg-green-600 text-white border-none rounded hover:bg-green-700 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
             >
-              🚗 Request Ride
+               Request Ride
             </button>
           )}
 
@@ -281,7 +281,7 @@ const Map = ({ userAccount }: MapProps) => {
               onClick={cancelRide}
               className="py-2.5 px-4 cursor-pointer bg-red-600 text-white border-none rounded hover:bg-red-700 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
             >
-              ❌ Cancel Ride
+               Cancel Ride
             </button>
           )}
         </div>
@@ -290,7 +290,7 @@ const Map = ({ userAccount }: MapProps) => {
         {rideRequest && (
           <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg">
             <h3 className="font-semibold text-green-800 mb-2">
-              🎉 Ride Matched!
+               Ride Matched!
             </h3>
             <div className="text-sm text-green-700">
               <p>
@@ -301,7 +301,7 @@ const Map = ({ userAccount }: MapProps) => {
                 {rideRequest.driver?.licensePlate})
               </p>
               <p>
-                <strong>Rating:</strong> ⭐ {rideRequest.driver?.rating}/5.0
+                <strong>Rating:</strong>  {rideRequest.driver?.rating}/5.0
               </p>
               <p>
                 <strong>ETA:</strong> {rideRequest.driver?.eta} minutes
@@ -317,7 +317,7 @@ const Map = ({ userAccount }: MapProps) => {
         {showDrivers && !rideRequest && (
           <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
             <p className="text-blue-800 font-semibold">
-              🔍 Searching for nearby drivers...
+               Searching for nearby drivers...
             </p>
             <p className="text-sm text-blue-600 mt-1">
               Click on a driver marker to select them!
@@ -355,7 +355,7 @@ const Map = ({ userAccount }: MapProps) => {
                 <Popup>
                   <div className="text-center min-w-[200px]">
                     <strong className="text-lg text-green-600">
-                      🎉 Your Driver
+                       Your Driver
                     </strong>
                     <br />
                     <strong className="text-lg">
@@ -363,12 +363,12 @@ const Map = ({ userAccount }: MapProps) => {
                     </strong>
                     <br />
                     <div className="text-sm text-gray-600 mt-1">
-                      <div>⭐ {rideRequest.driver.rating}/5.0</div>
-                      <div>🚗 {rideRequest.driver.carModel}</div>
-                      <div>📋 {rideRequest.driver.licensePlate}</div>
-                      <div>⏱️ {rideRequest.driver.eta} min away</div>
+                      <div> {rideRequest.driver.rating}/5.0</div>
+                      <div> {rideRequest.driver.carModel}</div>
+                      <div> {rideRequest.driver.licensePlate}</div>
+                      <div> {rideRequest.driver.eta} min away</div>
                       <div className="mt-2 font-semibold text-green-600">
-                        💰 Fare: ${rideRequest.estimatedFare}
+                         Fare: ${rideRequest.estimatedFare}
                       </div>
                     </div>
                   </div>
