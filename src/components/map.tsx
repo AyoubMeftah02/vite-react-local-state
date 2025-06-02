@@ -83,7 +83,7 @@ const DriverMarker = ({
   );
 };
 
-const Map = ({ userAccount }: MapProps) => {
+const MapComp = ({ userAccount }: MapProps) => {
   const [userPosition, setUserPosition] = useState<LatLngExpression | null>(
     null,
   );
@@ -392,4 +392,4 @@ const Map = ({ userAccount }: MapProps) => {
   );
 };
 
-export default Map;
+export default MapComp;
